@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environnements virtuels
+.venv/
+venv/
+env/
+
+# Variables d'environnement et secrets
+.env
+.env.*
+!.env.example
+
+# Base de données locale
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+
+# Fichiers temporaires et tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Fichiers statiques générés
+staticfiles/
