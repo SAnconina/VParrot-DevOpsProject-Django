@@ -1,0 +1,32 @@
+---
+- name: Deploy VParrot to Kubernetes
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Verify Kubernetes cluster is available
+      ansible.builtin.command:
+        cmd: kubectl get nodes --context kind-vparrot
+      changed_when: false
+
+    - name: Deploy VParrot Kubernetes manifests
+      ansible.builtin.command:
+        cmd: kubectl apply --context kind-vparrot -f k8s/
+        chdir: "{{ playbook_dir }}/.."
+      register: deployment_result
+      changed_when: "'configured' in deployment_result.stdout or 'created' in deployment_result.stdout"
+
+    - name: Display deployment result
+      ansible.builtin.debug:
+        var: deployment_result.stdout_lines
+
+    - name: Wait for PostgreSQL deployment
+      ansible.builtin.command:
+        cmd: kubectl rollout status deployment/postgres -n vparrot --context kind-vparrot --timeout=120s
+      changed_when: false
+
+    - name: Wait for Django deployment
+      ansible.builtin.command:
+        cmd: kubectl rollout status deployment/django -n vparrot --context kind-vparrot --timeout=120s
+      changed_when: false
