@@ -1,0 +1,26 @@
+---
+- name: Verify VParrot Kubernetes deployment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Check Kubernetes nodes
+      ansible.builtin.command:
+        cmd: kubectl get nodes --context kind-vparrot
+      register: nodes_result
+      changed_when: false
+
+    - name: Display Kubernetes nodes
+      ansible.builtin.debug:
+        var: nodes_result.stdout_lines
+
+    - name: Check VParrot pods
+      ansible.builtin.command:
+        cmd: kubectl get pods -n vparrot --context kind-vparrot
+      register: pods_result
+      changed_when: false
+
+    - name: Display VParrot pods
+      ansible.builtin.debug:
+        var: pods_result.stdout_lines
