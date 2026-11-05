@@ -30,3 +30,12 @@ htmlcov/
 
 # Fichiers statiques générés
 staticfiles/
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
